@@ -5,7 +5,13 @@ $templateName = "Template de Testes";
 
 # Constants
 $webUrl = "https://{0}.sharepoint.com{1}" -f $tenant, $sourceSite;
-$templatePath = ".\Result\Backup.xml";
+$resultFolder = ".\Result"
+$templatePath = $("{0}\Template.xml" -f $resultFolder);
+
+# Remove old templates
+if (Test-Path $resultFolder) {
+    Remove-Item $resultFolder -Force  -Recurse -ErrorAction SilentlyContinue;
+}
 
 # Office 365 Login 
 Write-Output $("Connecting to {0}..." -f $webUrl);
@@ -23,4 +29,6 @@ Get-PnPSiteTemplate `
     -IncludeNativePublishingFiles `
     -IncludeAllPages `
     -TemplateDisplayName $templateName `
+    -Handlers All `
+    -Schema LATEST `
     -Force;

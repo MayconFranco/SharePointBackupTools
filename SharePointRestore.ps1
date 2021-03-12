@@ -20,7 +20,7 @@ $tenant = "digitalfortytwo";
 $destinationName = "PnP Destino";
 $destinationSite = "PnPDestino";
 $webUrl = "https://{0}.sharepoint.com" -f $tenant;
-$templatePath = ".\Result\Backup.xml";
+$templatePath = ".\Result\Template.xml";
 
 # Office 365 Login 
 Write-Output $("Connecting to {0}..." -f $webUrl);
@@ -45,4 +45,4 @@ Connect-PnPOnline -Url $destinationUrl -Interactive;
 
 # Apply template from backup
 Write-Output "Applying template...";
-Invoke-PnPSiteTemplate -Path $templatePath;
+Invoke-PnPSiteTemplate -Path $templatePath -ClearNavigation;
