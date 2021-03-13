@@ -32,6 +32,9 @@ $destinationUrl = "https://{0}.sharepoint.com/sites/{1}" -f $tenant, $destinatio
 if (Test-PnPSiteExists -Url $destinationUrl) {
     Write-Output "Site already exists, replacing it...";
     Remove-PnPTenantSite -Url $destinationUrl -Force -SkipRecycleBin;
+
+    # Wait 1 minute because SharePoint is lazy as fuck
+    Start-Sleep -Seconds 60;
 }
 else {
     Write-Output "Site doesn't exists, creating a new one...";   
@@ -39,6 +42,9 @@ else {
 
 # Create new site
 New-PnPSite -Type CommunicationSite -Title $destinationName -SiteDesign Blank -Url $destinationUrl -Lcid 2070 -Wait | Out-Null;
+
+# Wait 1 minute because SharePoint is lazy as fuck
+Start-Sleep -Seconds 60;
 
 # Connect to the new site
 Connect-PnPOnline -Url $destinationUrl -Interactive;
