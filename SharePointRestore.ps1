@@ -4,7 +4,7 @@ Function Test-PnPSiteExists {
         $Url
     )
     try {
-        Test-PnPSite -Identity $url -ErrorAction Stop;
+        Test-PnPSite -Identity $Url -ErrorAction Stop;
         return $true;
     }
     catch {
