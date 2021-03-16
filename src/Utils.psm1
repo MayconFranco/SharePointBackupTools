@@ -1,6 +1,6 @@
 function Test-SiteExists {
     param (
-        [String]
+        [string]
         $Url
     )
     try {
@@ -14,11 +14,17 @@ function Test-SiteExists {
 
 function New-EmbedIFrame {
     param (
-        [String]
-        $Guid
+        [string]
+        $Guid,
+
+        [string]
+        $Tenant,
+
+        [string]
+        $SiteName
     )
 
-    $code = '<iframe width="400" height="250" frameborder="0" scrolling="no" src="https://digitalfortytwo.sharepoint.com/sites/PnPResultado20210315/_layouts/15/Doc.aspx?sourcedoc={' + $Guid + '}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True"></iframe>';
+    $code = '<iframe width="400" height="250" frameborder="0" scrolling="no" src="https://' + $Tenant + '.sharepoint.com/sites/' + $SiteName + '/_layouts/15/Doc.aspx?sourcedoc={' + $Guid + '}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True"></iframe>';
     return $code;
 }
 

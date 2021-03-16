@@ -34,7 +34,7 @@ function Repair-EmbedDocumentWebParts {
                 $Path = $([System.Uri]$DecodedUrl).LocalPath
                 $File = Get-PnPFile -Url $Path -AsListItem;
                 $Guid = $File.FieldValues["UniqueId"].Guid.ToString();
-                $Code = $(New-EmbedIFrame -Guid $Guid);
+                $Code = New-EmbedIFrame -Guid $Guid -Tenant $Tenant -SiteName $SiteName;
 
                 $Column = $Control.Column.Order;
                 $Section = $Control.Section.Order;
