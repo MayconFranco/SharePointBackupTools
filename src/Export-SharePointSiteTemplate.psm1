@@ -45,7 +45,7 @@
     }
     
     end {
-        Write-Verbose "   [Export-SharePointSiteTemplate] Done!"
+        Write-Verbose "[Export-SharePointSiteTemplate] Done!"
     }
 }
 
