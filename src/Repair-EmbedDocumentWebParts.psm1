@@ -38,10 +38,11 @@ function Repair-EmbedDocumentWebParts {
 
                 $Column = $Control.Column.Order;
                 $Section = $Control.Section.Order;
+                $Order = $Control.Order;
 
                 $Control.Delete();
                 
-                Add-PnPPageWebPart -Column $Column -Section $Section -Page $Page -DefaultWebPartType ContentEmbed -WebPartProperties @{
+                Add-PnPPageWebPart -Column $Column -Section $Section -Order $Order -Page $Page -DefaultWebPartType ContentEmbed -WebPartProperties @{
                     "embedCode" = $Code;
                 };
                 $Page.Save();
