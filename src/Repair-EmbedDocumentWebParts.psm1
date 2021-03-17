@@ -29,23 +29,26 @@ function Repair-EmbedDocumentWebParts {
             $Controls = $Page.Controls.Where( { $_.Type.Name -eq "PageWebPart" -and $_.Title -eq "File viewer" });
 
             foreach ($Control in $Controls) {
-                $Url = $Control.Properties.GetProperty("file").GetString();
-                $DecodedUrl = [System.Web.HttpUtility]::UrlDecode($Url);
-                $Path = $([System.Uri]$DecodedUrl).LocalPath
-                $File = Get-PnPFile -Url $Path -AsListItem;
-                $Guid = $File.FieldValues["UniqueId"].Guid.ToString();
-                $Code = New-EmbedIFrame -Guid $Guid -Tenant $Tenant -SiteName $SiteName;
+                $Found = $Control.HtmlPropertiesData -match 'href=["]([^"]+?)["]';
+                if ($Found) {
+                    $Url = $("https://{0}.sharepoint.com{1}" -f $Tenant, $Matches[1])
+                    $DecodedUrl = [System.Web.HttpUtility]::UrlDecode($Url);
+                    $Path = $([System.Uri]$DecodedUrl).LocalPath
+                    $File = Get-PnPFile -Url $Path -AsListItem;
+                    $Guid = $File.FieldValues["UniqueId"].Guid.ToString();
+                    $Code = New-EmbedIFrame -Guid $Guid -Tenant $Tenant -SiteName $SiteName;
 
-                $Column = $Control.Column.Order;
-                $Section = $Control.Section.Order;
-                $Order = $Control.Order;
+                    $Column = $Control.Column.Order;
+                    $Section = $Control.Section.Order;
+                    $Order = $Control.Order;
 
-                $Control.Delete();
-                
-                Add-PnPPageWebPart -Column $Column -Section $Section -Order $Order -Page $Page -DefaultWebPartType ContentEmbed -WebPartProperties @{
-                    "embedCode" = $Code;
-                };
-                $Page.Save();
+                    $Control.Delete();
+                    
+                    Add-PnPPageWebPart -Column $Column -Section $Section -Order $Order -Page $Page -DefaultWebPartType ContentEmbed -WebPartProperties @{
+                        "embedCode" = $Code;
+                    };
+                    $Page.Save();
+                }
             }
         }
     }
